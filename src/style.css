@@ -5,4 +5,45 @@ html, body {
 
 * {
     box-sizing: border-box;
+    text-align: center;
+}
+
+#container {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+}
+
+/* #computer-container {
+    background-color: blue;
+}
+
+#user-container {
+    background-color: green;
+} */
+
+.grid-container {
+    height: 45%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(11, 1fr);
+}
+
+.grid-ele {
+    border: solid black;
+}
+
+#between-container {
+    height: 10%;
+    background-color: red;
+}
+
+.ship {
+    background-color: green;
 }
