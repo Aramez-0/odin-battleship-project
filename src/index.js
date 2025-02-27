@@ -4,6 +4,7 @@ function createGrid(name) {
     let grid = document.querySelector(`#${name}`)
     
     const values = {
+        0: '.',
         1: 'A',
         2: 'B',
         3: 'C',
@@ -34,14 +35,13 @@ function createGrid(name) {
             div.textContent = values[i];
         } else {
             div.classList.add('game-ele');
-
         }
 
         grid.appendChild(div)
     }
 
     let x = 0
-    let gameEle = document.querySelectorAll('.game-ele')
+    let gameEle = grid.querySelectorAll('.game-ele')
     for (let i = 0; i < 100; i++) {
         let y = 0
 
@@ -59,6 +59,7 @@ function createGrid(name) {
 createGrid('grid1')
 createGrid('grid2')
 
+
 class Ship {
     constructor(length) {
         this.length = length;
@@ -74,22 +75,67 @@ class Ship {
     isSunk() {
         if (this.hitNum === this.length) {
             this.sunk = true;
-            console.log('The ship is sunk!');
         }
     }
 }
-
+let shipMap = new Map()
 function gameBoard() {
     let board = Array(10).fill().map(() => Array(10).fill(null));
     
-    board[2][3] = new Ship(3);
-    let ele = document.querySelector(`.x${2}.y${3}`)
-    ele.classList.add('ship')
+    function addShip(length, row, col, direction) {
+        let ship = new Ship(length)
+        if (direction == 'ver') {
+            for (let i = 0; i < length; i++) {
+                let pos = row + i
+                if (row >= 5) {
+                    pos = row - i
+                }
+                let ele = document.querySelector(`.x${pos}.y${col}`)
+                ele.classList.add('ship')
+                
+                board[pos][col] = ship
+                shipMap.set(ele, ship)
+            }
+        } else {
+            
+            for (let i = 0; i < length; i++) {
+                let pos = col + i
+                if (col >= 5) {
+                    pos = col - i
+                }
+                let ele = document.querySelector(`.x${row}.y${pos}`)
+                ele.classList.add('ship')
+                
+                board[row][pos] = ship
+                shipMap.set(ele, ship)
+            }
+        }
+    }
+    addShip(3, 9, 0, 'hor')
+    addShip(5, 2, 7, 'ver')
     console.log(board)
-    return board
 }
 gameBoard()
 
+let ship = document.querySelectorAll('.ship');
+
+function handleShipClick(event) {
+    const clickedShip = shipMap.get(event.target);
+    clickedShip.hit();
+    console.log(clickedShip);
+
+    if (this.sunk === true) {
+        // remove class, remove from DOM
+    }
+
+    event.target.removeEventListener('click', handleShipClick);
+}
+
+for (let i = 0; i < ship.length; i++) {
+    ship[i].addEventListener('click', handleShipClick);
+}
+
+// Math.round(Math.random() * (target number - 1)) + 1
 
 // i leave it at that for now. make sure to reference the odin page often. 
 // They're smarter than you
