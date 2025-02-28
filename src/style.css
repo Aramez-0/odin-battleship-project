@@ -42,8 +42,41 @@ html, body {
 #between-container {
     height: 10%;
     background-color: red;
+    display: flex;
+    justify-content: center;
 }
 
 .ship {
     background-color: green;
+}
+
+.hit-ship {
+    background-color: red;
+}
+
+.hit-miss {
+    background-color: grey;
+}
+
+#logs {
+    background-color: purple;
+    height: 100%;
+    width: 300px;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+}
+
+#setup {
+    display: flex;
+    flex-direction: column;
+}
+
+button {
+    width: fit-content;
+}
+
+#dir {
+    margin-top: 3px;
+    margin-bottom: 3px;
 }

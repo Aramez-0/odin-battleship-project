@@ -59,12 +59,16 @@ function createGrid(name) {
 createGrid('grid1')
 createGrid('grid2')
 
+let computerShipsSunk = 0
+let userShipsSunk = 0
 
 class Ship {
-    constructor(length) {
+    constructor(length, dir, bound, user) {
         this.length = length;
         this.hitNum = 0;
-        this.sunk = false;
+        this.dir = dir;
+        this.bounds = bound;
+        this.user = user;
     }
 
     hit() {
@@ -74,16 +78,29 @@ class Ship {
 
     isSunk() {
         if (this.hitNum === this.length) {
-            this.sunk = true;
+            console.log(`you sunk a ${this.length} long ship`)
+            if (this.user == 'comp') {
+                computerShipsSunk ++
+                console.log(computerShipsSunk)
+                win('comp')
+            } else {
+                userShipsSunk ++
+                console.log(userShipsSunk)
+                win('user')
+            }
         }
     }
 }
-let shipMap = new Map()
-function gameBoard() {
-    let board = Array(10).fill().map(() => Array(10).fill(null));
-    
+
+let shipMap2 = new Map()
+function userGameBoard() {
     function addShip(length, row, col, direction) {
-        let ship = new Ship(length)
+        let bounds = '<5'
+        if (row >5 || col >5) {
+            bounds = '>5'
+        }
+        
+        let ship = new Ship(length, direction, bounds, 'comp')
         if (direction == 'ver') {
             for (let i = 0; i < length; i++) {
                 let pos = row + i
@@ -93,8 +110,7 @@ function gameBoard() {
                 let ele = document.querySelector(`.x${pos}.y${col}`)
                 ele.classList.add('ship')
                 
-                board[pos][col] = ship
-                shipMap.set(ele, ship)
+                shipMap2.set(ele, ship)
             }
         } else {
             
@@ -106,36 +122,108 @@ function gameBoard() {
                 let ele = document.querySelector(`.x${row}.y${pos}`)
                 ele.classList.add('ship')
                 
-                board[row][pos] = ship
-                shipMap.set(ele, ship)
+                shipMap2.set(ele, ship)
             }
         }
     }
-    addShip(3, 9, 0, 'hor')
-    addShip(5, 2, 7, 'ver')
-    console.log(board)
+    
 }
-gameBoard()
 
-let ship = document.querySelectorAll('.ship');
+let shipMap1 = new Map()
+function computerGameBoard() {
+    
+    function addShip(length, row, col, direction) {
+        let bounds = '<5'
+        if (row >5 || col >5) {
+            bounds = '>5'
+        }
+        
+        let ship = new Ship(length, direction, bounds, 'comp')
+        if (direction == 'ver') {
+            for (let i = 0; i < length; i++) {
+                let pos = row + i
+                if (row >= 5) {
+                    pos = row - i
+                }
+                let ele = document.querySelector(`.x${pos}.y${col}`)
+                ele.classList.add('ship')
+                
+                shipMap1.set(ele, ship)
+            }
+        } else {
+            
+            for (let i = 0; i < length; i++) {
+                let pos = col + i
+                if (col >= 5) {
+                    pos = col - i
+                }
+                let ele = document.querySelector(`.x${row}.y${pos}`)
+                ele.classList.add('ship')
+                
+                shipMap1.set(ele, ship)
+            }
+        }
+    }
+    function random(type) {
+        if (type === 'num') {
+            return Math.round(Math.random() * 9)
+        } else {
+            let arr = ['hor', 'ver']
+            let r = Math.round(Math.random())
+            return arr[r]
+        }
+    }
+    addShip(5, random('num'), random('num'), random('dir'))
+    addShip(4, random('num'), random('num'), random('dir'))
+    addShip(3, random('num'), random('num'), random('dir'))
+    addShip(3, random('num'), random('num'), random('dir'))
+    addShip(2, random('num'), random('num'), random('dir'))
+}
+computerGameBoard()
+
+function createLogs(msg) {
+    let logContainer = document.querySelector('#logs')
+    let div = document.createElement('div')
+    div.textContent = msg
+    logContainer.appendChild(div)
+    div.scrollIntoView()
+}
 
 function handleShipClick(event) {
-    const clickedShip = shipMap.get(event.target);
-    clickedShip.hit();
-    console.log(clickedShip);
-
-    if (this.sunk === true) {
-        // remove class, remove from DOM
+    let target = event.target
+    let startX = parseInt(event.target.classList[2].slice(1)); // Extract x from class like x3 
+    let startY = parseInt(event.target.classList[3].slice(1)); // Extract y from class like y2
+    const clickedShip = shipMap1.get(event.target);
+    if (target.classList.contains('ship')) {
+        console.log(`hit a ship at: ${startX} ${startY}`)
+        createLogs(`hit a ship at: ${startX} ${startY}`)
+        target.classList.add('hit-ship')
+        clickedShip.hit()
+    } else {
+        console.log(`missed a ship at: ${startX} ${startY}`)
+        createLogs(`missed a ship at: ${startX} ${startY}`)
+        target.classList.add('hit-miss')
     }
 
     event.target.removeEventListener('click', handleShipClick);
 }
 
-for (let i = 0; i < ship.length; i++) {
-    ship[i].addEventListener('click', handleShipClick);
+let gameEle = document.querySelectorAll('.game-ele')
+for (let i = 0; i < gameEle.length; i++) {
+    gameEle[i].addEventListener('click', handleShipClick);
 }
 
-// Math.round(Math.random() * (target number - 1)) + 1
+function win(user) {
+    if (computerShipsSunk === 5) {
+        console.log(`${user} won the game`)
+        createLogs(`${user} won the game`)
+    }
+}
+
+
+
+// random causes overlap, if overlap can't win game
+
 
 // i leave it at that for now. make sure to reference the odin page often. 
 // They're smarter than you
