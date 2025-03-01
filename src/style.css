@@ -28,20 +28,23 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
 }
 
 .grid {
     display: grid;
     grid-template-columns: repeat(11, 1fr);
+    border: solid black;
 }
 
 .grid-ele {
     border: solid black;
+    font-size: 1rem;
 }
 
 #between-container {
     height: 10%;
-    background-color: red;
+    background-color: grey;
     display: flex;
     justify-content: center;
 }
@@ -70,6 +73,7 @@ html, body {
 #setup {
     display: flex;
     flex-direction: column;
+    margin-left: 5px;
 }
 
 button {
@@ -79,4 +83,23 @@ button {
 #dir {
     margin-top: 3px;
     margin-bottom: 3px;
+}
+
+#co-ords {
+    width: 60px;
+}
+
+.setup-align-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+#grid1 .ship {
+    background-color: white;
+}
+
+#grid1 .hit-ship {
+    background-color: red;
 }
