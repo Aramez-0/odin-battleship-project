@@ -8,18 +8,22 @@
 <body>
     <div id="container">
         <div id="computer-container" class="grid-container">
+            <p>Computer</p>
             <div class="grid" id="grid1"></div>
         </div>
         <div id="between-container">
             <div id="logs"></div>
         </div>
         <div id="user-container" class="grid-container">
-            <div class="grid" id="grid2"></div>
-            <div id="setup">
-                <label for="co-ords">Place ships</label>
-                <input type="text" id="co-ords" placeholder="e.g. 0 9 ver">
-                <button type="button" id="dir">Vertical</button>
-                <button type="button" id="place-ship">Place</button>
+            <p>User</p>
+            <div class="setup-align-container">
+                <div class="grid" id="grid2"></div>
+                <div id="setup">
+                    <label for="co-ords">Place ships</label>
+                    <input type="text" id="co-ords" placeholder="e.g. 5 6">
+                    <button type="button" id="dir" title="Click to toggle ship direction">Vertical</button>
+                    <button type="button" id="place-ship">Place</button>
+            </div>
             </div>
         </div>
     </div>
