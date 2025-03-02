@@ -95,11 +95,11 @@ button {
     justify-content: center;
 }
 
-
+/*
 #grid1 .ship {
     background-color: white;
 }
-
+*/
 #grid1 .hit-ship {
     background-color: red;
 }

@@ -59,12 +59,6 @@ function createGrid(name) {
     }
 }
 
-createGrid('grid1')
-createGrid('grid2')
-
-let computerShipsSunk = 0
-let userShipsSunk = 0
-
 class Ship {
     constructor(length, dir, bound, user) {
         this.length = length;
@@ -160,14 +154,13 @@ function userGameBoard() {
                 let setup = document.querySelector('#setup');
                 let logContainer = document.querySelector('#logs');
                 logContainer.innerHTML = '';
-                setup.remove();
+                setup.style.display = 'none'
                 computerGameBoard();
             }
         })
     }
     userShips()
 }
-userGameBoard()
 
 let shipMap1 = new Map()
 function computerGameBoard() {
@@ -276,8 +269,10 @@ function handleShipClick(event) {
 function win(user) {
     if (computerShipsSunk === 5) {
         createLogs(`${user} won the game`, 'yellow')
+        endGame(user)
     } else if (userShipsSunk === 5){
         createLogs(`${user} won the game`, 'yellow')
+        endGame(user)
     }
 }
 
@@ -300,8 +295,23 @@ function compAttack() {
     }
 }
 
+let computerShipsSunk = 0
+let userShipsSunk = 0
+createGrid('grid1')
+createGrid('grid2')
+userGameBoard()
 
-// i leave it at that for now. make sure to reference the odin page often. 
-// They're smarter than you
-
-// this is an ambitious project
+function endGame(user) {
+    let dialog = document.querySelector('#end')
+    dialog.showModal()
+    let p = document.createElement('p')
+    p.textContent = `${user} won the game`
+    dialog.appendChild(p)
+    let btn = document.createElement('button')
+    btn.type = 'button'
+    btn.textContent = 'Reload'
+    dialog.appendChild(btn)
+    btn.addEventListener('click', () => {
+        location.reload()
+    })
+}
